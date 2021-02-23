@@ -166,6 +166,12 @@ namespace OptionRecords
             _ => new T[0]
         };
 
+        public static IEnumerable<T> ToEnumerable<T>(Option<T> option)
+        {
+            if (option is Some<T> some)
+                yield return some.Value;
+        }
+
         public static List<T> ToList<T>(Option<T> option) => option switch
         {
             Some<T> some => new List<T> { some.Value },
@@ -230,6 +236,8 @@ namespace OptionRecords
         public static Option<T> OrElseWith<T>(this Option<T> option, Func<Option<T>> ifNoneThunk) => Option.OrElseWith(option, ifNoneThunk);
 
         public static T[] ToArray<T>(this Option<T> option) => Option.ToArray(option);
+
+        public static IEnumerable<T> ToEnumerable<T>(Option<T> option) => Option.ToEnumerable(option);
 
         public static List<T> ToList<T>(this Option<T> option) => Option.ToList(option);
 
