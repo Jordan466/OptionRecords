@@ -60,7 +60,7 @@ namespace OptionRecords
 
         public static Option<T> Flatten<T>(Option<Option<T>> option) => option switch
         {
-            Some<T> outter => outter switch
+            Some<Option<T>> outter => outter.Value switch
             {
                 Some<T> inner => inner,
                 _ => new None<T>()
@@ -68,13 +68,13 @@ namespace OptionRecords
             _ => new None<T>()
         };
 
-        public static Option<TState> Fold<T, TState>(Option<T> option, Func<TState, T, TState> fold, TState state) => option switch
+        public static TState Fold<T, TState>(Option<T> option, Func<TState, T, TState> fold, TState state) => option switch
         {
-            Some<T> some => new Some<TState>(fold(state, some.Value)),
-            _ => new None<TState>()
+            Some<T> some => fold(state, some.Value),
+            _ => state
         };
 
-        public static Option<TState> FoldBack<T, TState>(Option<T> option, Func<TState, T, TState> fold, TState state)
+        public static TState FoldBack<T, TState>(Option<T> option, Func<TState, T, TState> fold, TState state)
             => Option.Fold(option, fold, state);
 
         public static bool ForAll<T>(Option<T> option, Predicate<T> predicate) => option switch
@@ -209,9 +209,9 @@ namespace OptionRecords
 
         public static Option<T> Flatten<T>(this Option<Option<T>> option) => Option.Flatten(option);
 
-        public static Option<TState> Fold<T, TState>(this Option<T> option, Func<TState, T, TState> fold, TState state) => Option.Fold(option, fold, state);
+        public static TState Fold<T, TState>(this Option<T> option, Func<TState, T, TState> fold, TState state) => Option.Fold(option, fold, state);
 
-        public static Option<TState> FoldBack<T, TState>(this Option<T> option, Func<TState, T, TState> fold, TState state) => Option.FoldBack(option, fold, state);
+        public static TState FoldBack<T, TState>(this Option<T> option, Func<TState, T, TState> fold, TState state) => Option.FoldBack(option, fold, state);
 
         public static bool ForAll<T>(this Option<T> option, Predicate<T> predicate) => Option.ForAll(option, predicate);
 
