@@ -4,7 +4,7 @@ using OptionRecords;
 
 namespace OptionRecords.Tests
 {
-    public class UnitTest1
+    public class OptionTest
     {
         [Fact]
         public void SomeTest()
