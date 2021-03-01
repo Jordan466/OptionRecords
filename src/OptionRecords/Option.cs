@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OptionRecords
 {
@@ -47,6 +48,20 @@ namespace OptionRecords
         public static Option<U> Bind<T, U>(Option<T> option, Func<T, Option<U>> binder) => option switch
         {
             Some<T> some => binder(some.Value),
+            _ => new None<U>()
+        };
+
+        /// <inheritdoc cref="OptionRecords.Option.Bind{T, U}(Option{T}, Func{T, Option{U}})"/>
+        public static async Task<Option<U>> Bind<T, U>(Option<T> option, Func<T, Task<Option<U>>> binder) => option switch
+        {
+            Some<T> some => await binder(some.Value),
+            _ => new None<U>()
+        };
+
+        /// <inheritdoc cref="OptionRecords.Option.Bind{T, U}(Option{T}, Func{T, Option{U}})"/>
+        public static async Task<Option<U>> Bind<T, U>(Task<Option<T>> option, Func<T, Task<Option<U>>> binder) => await option switch
+        {
+            Some<T> some => await binder(some.Value),
             _ => new None<U>()
         };
 
@@ -361,8 +376,14 @@ namespace OptionRecords
     /// </summary>
     public static class OptionExt
     {
-        /// <inheritdoc cref="OptionRecords.Option.Bind"/>
+        /// <inheritdoc cref="OptionRecords.Option.Bind{T, U}(Option{T}, Func{T, Option{U}})"/>
         public static Option<U> Bind<T, U>(this Option<T> option, Func<T, Option<U>> binder) => Option.Bind(option, binder);
+
+        /// <inheritdoc cref="OptionRecords.Option.Bind{T, U}(Option{T}, Func{T, Option{U}})"/>
+        public static async Task<Option<U>> Bind<T, U>(this Option<T> option, Func<T, Task<Option<U>>> binder) => await Option.Bind(option, binder);
+
+        /// <inheritdoc cref="OptionRecords.Option.Bind{T, U}(Option{T}, Func{T, Option{U}})"/>
+        public static async Task<Option<U>> Bind<T, U>(this Task<Option<T>> option, Func<T, Task<Option<U>>> binder) => await Option.Bind(option, binder);
 
         /// <inheritdoc cref="OptionRecords.Option.Contains"/>
         public static bool Contains<T>(this Option<T> option, T value) => Option.Contains(option, value);
@@ -385,10 +406,10 @@ namespace OptionRecords
         /// <inheritdoc cref="OptionRecords.Option.Flatten"/>
         public static Option<T> Flatten<T>(this Option<Option<T>> option) => Option.Flatten(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.Bind"/>
+        /// <inheritdoc cref="OptionRecords.Option.Fold"/>
         public static TState Fold<T, TState>(this Option<T> option, Func<TState, T, TState> fold, TState state) => Option.Fold(option, fold, state);
 
-        /// <inheritdoc cref="OptionRecords.Option.Bind"/>
+        /// <inheritdoc cref="OptionRecords.Option.FoldBack"/>
         public static TState FoldBack<T, TState>(this Option<T> option, Func<TState, T, TState> fold, TState state) => Option.FoldBack(option, fold, state);
 
         /// <inheritdoc cref="OptionRecords.Option.ForAll"/>
@@ -397,7 +418,7 @@ namespace OptionRecords
         /// <inheritdoc cref="OptionRecords.Option.Get{T}(Option{T})"/>
         public static T Get<T>(this Option<T> option) => Option.Get(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.Bind"/>
+        /// <inheritdoc cref="OptionRecords.Option.Get{T, TException}(Option{T}, Func{TException})"/>
         public static T Get<T, TException>(this Option<T> option, Func<TException> exception) where TException : Exception, new() => Option.Get(option, exception);
 
         /// <inheritdoc cref="OptionRecords.Option.IsNone"/>
