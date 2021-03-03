@@ -228,6 +228,13 @@ namespace OptionRecords
                 action(some.Value);
         }
 
+        /// <inheritdoc cref="OptionRecords.Option.Iter{T}(Option{T}, Action{T})"/>
+        public static async Task Iter<T>(Task<Option<T>> option, Action<T> action)
+        {
+            if (await option is Some<T> some)
+                action(some.Value);
+        }
+
         /// <param name="mapping"> A function to apply to the option value </param>
         /// <param name="option"> The input option </param>
         /// <returns> An option of the input value after applying the mapping function, or None if the input is None </returns>
@@ -441,8 +448,12 @@ namespace OptionRecords
         /// <inheritdoc cref="OptionRecords.Option.IsSome"/>
         public static bool IsSome<T>(this Option<T> option) => Option.IsSome(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.Iter"/>
+        /// <inheritdoc cref="OptionRecords.Option.Iter{T}(Option{T}, Action{T})"/>
         public static void Iter<T>(this Option<T> option, Action<T> action) => Option.Iter(option, action);
+
+        /// <inheritdoc cref="OptionRecords.Option.Iter{T}(Option{T}, Action{T})"/>
+        public static async Task Iter<T>(this Task<Option<T>> option, Action<T> action) => await Option.Iter(option, action);
+
 
         /// <inheritdoc cref="OptionRecords.Option.Map{T, U}(Option{T}, Func{T, U})"/>
         public static Option<U> Map<T, U>(this Option<T> option, Func<T, U> mapping) => Option.Map(option, mapping);

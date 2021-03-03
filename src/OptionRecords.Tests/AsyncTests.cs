@@ -54,6 +54,16 @@ namespace OptionRecords.Tests
         }
 
         [Fact]
+        public async Task IterTest()
+        {
+            var option1 = Task.FromResult<Option<int>>(new None<int>());
+            var option2 = Task.FromResult<Option<int>>(new Some<int>(42));
+
+            await Option.Iter(option1, i => throw new Exception());
+            await Option.Iter(option2, i => Assert.Equal(42, i));
+        }
+
+        [Fact]
         public async Task MapTest()
         {
             var option1 = Task.FromResult<Option<int>>(new None<int>());
