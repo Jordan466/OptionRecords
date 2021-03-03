@@ -22,6 +22,13 @@ namespace OptionRecords.Tests
             Assert.Equal(new Some<int>(42), await Option.Bind(new Some<string>("42"), TryParse));
             Assert.Equal(new None<int>(), await Option.Bind(new Some<string>("Forty-two"), TryParse));
         }
+
+        [Fact]
+        public async Task MapTest()
+        {
+            Assert.Equal(new None<int>(), await Option.Map(new None<int>(), async x => await Task.FromResult(x * 2)));
+            Assert.Equal(new Some<int>(84), await Option.Map(new Some<int>(42), async x => await Task.FromResult(x * 2)));
+        }
     }
 
     public class AsyncOptionTest
@@ -45,5 +52,16 @@ namespace OptionRecords.Tests
             Assert.Equal(new Some<int>(42), await Option.Bind(option2, TryParse));
             Assert.Equal(new None<int>(), await Option.Bind(option3, TryParse));
         }
-    } 
+
+        [Fact]
+        public async Task MapTest()
+        {
+            var option1 = Task.FromResult<Option<int>>(new None<int>());
+            var option2 = Task.FromResult<Option<int>>(new Some<int>(42));
+
+
+            Assert.Equal(new None<int>(), await Option.Map(option1, async x => await Task.FromResult(x * 2)));
+            Assert.Equal(new Some<int>(84), await Option.Map(option2, async x => await Task.FromResult(x * 2)));
+        }
+    }
 }

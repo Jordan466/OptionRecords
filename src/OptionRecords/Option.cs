@@ -237,6 +237,20 @@ namespace OptionRecords
             _ => new None<U>()
         };
 
+        /// <inheritdoc cref="OptionRecords.Option.Map{T, U}(Option{T}, Func{T, U})"/>
+        public static async Task<Option<U>> Map<T, U>(Option<T> option, Func<T, Task<U>> mapping) => option switch
+        {
+            Some<T> some => new Some<U>(await mapping(some.Value)),
+            _ => new None<U>()
+        };
+
+        /// <inheritdoc cref="OptionRecords.Option.Map{T, U}(Option{T}, Func{T, U})"/>
+        public static async Task<Option<U>> Map<T, U>(Task<Option<T>> option, Func<T, Task<U>> mapping) => await option switch
+        {
+            Some<T> some => new Some<U>(await mapping(some.Value)),
+            _ => new None<U>()
+        };
+
         /// <param name="options"> The input options </param>
         /// <param name="mapping"> A function to apply to the option values </param>
         /// <returns> An option of the input values after applying the mapping function, or None if either input is None </returns>
@@ -430,8 +444,14 @@ namespace OptionRecords
         /// <inheritdoc cref="OptionRecords.Option.Iter"/>
         public static void Iter<T>(this Option<T> option, Action<T> action) => Option.Iter(option, action);
 
-        /// <inheritdoc cref="OptionRecords.Option.Map"/>
+        /// <inheritdoc cref="OptionRecords.Option.Map{T, U}(Option{T}, Func{T, U})"/>
         public static Option<U> Map<T, U>(this Option<T> option, Func<T, U> mapping) => Option.Map(option, mapping);
+
+        /// <inheritdoc cref="OptionRecords.Option.Map{T, U}(Option{T}, Func{T, U})"/>
+        public static async Task<Option<U>> Map<T, U>(this Option<T> option, Func<T, Task<U>> mapping) => await Option.Map(option, mapping);
+
+        /// <inheritdoc cref="OptionRecords.Option.Map{T, U}(Option{T}, Func{T, U})"/>
+        public static async Task<Option<U>> Map<T, U>(this Task<Option<T>> option, Func<T, Task<U>> mapping) => await Option.Map(option, mapping);
 
         /// <param name="options"> The input options </param>
         /// <param name="mapping"> A function to apply to the option values </param>
