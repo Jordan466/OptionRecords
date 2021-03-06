@@ -77,9 +77,23 @@ namespace OptionRecords
             _ => false
         };
 
+        /// <inheritdoc cref="OptionRecords.Option.Contains{T}(Option{T}, T)"/>
+        public static async Task<bool> Contains<T>(Task<Option<T>> option, T value) => await option switch
+        {
+            Some<T> some => some.Value.Equals(value),
+            _ => false
+        };
+
         /// <param name="option"> The input option </param>
         /// <returns> A zero if the option is None, a one otherwise. </returns>
         public static int Count<T>(Option<T> option) => option switch
+        {
+            Some<T> some => 1,
+            _ => 0
+        };
+
+        /// <inheritdoc cref="OptionRecords.Option.Count{T}(Option{T})"/>
+        public static async Task<int> Count<T>(Task<Option<T>> option) => await option switch
         {
             Some<T> some => 1,
             _ => 0
@@ -97,6 +111,13 @@ namespace OptionRecords
             _ => value
         };
 
+        /// <inheritdoc cref="OptionRecords.Option.DefaultValue{T}(Option{T}, T)"/>
+        public static async Task<T> DefaultValue<T>(Task<Option<T>> option, T value) => await option switch
+        {
+            Some<T> some => some.Value,
+            _ => value
+        };
+
         /// <summary>
         /// Gets the value of the option if the option is Some, otherwise evaluates defThunk and returns the result
         /// </summary>
@@ -104,6 +125,13 @@ namespace OptionRecords
         /// <param name="defThunk"> A thunk that provides a default value when evaluated </param>
         /// <returns> The option if the option is Some, else the result of evaluating defThunk </returns>
         public static T DefaultWith<T>(Option<T> option, Func<T> defThunk) => option switch
+        {
+            Some<T> some => some.Value,
+            _ => defThunk()
+        };
+
+        /// <inheritdoc cref="OptionRecords.Option.DefaultValue{T}(Option{T}, T)"/>
+        public static async Task<T> DefaultWith<T>(Task<Option<T>> option, Func<T> defThunk) => await option switch
         {
             Some<T> some => some.Value,
             _ => defThunk()
@@ -406,17 +434,29 @@ namespace OptionRecords
         /// <inheritdoc cref="OptionRecords.Option.Bind{T, U}(Option{T}, Func{T, Option{U}})"/>
         public static async Task<Option<U>> Bind<T, U>(this Task<Option<T>> option, Func<T, Task<Option<U>>> binder) => await Option.Bind(option, binder);
 
-        /// <inheritdoc cref="OptionRecords.Option.Contains"/>
+        /// <inheritdoc cref="OptionRecords.Option.Contains{T}(Option{T}, T)"/>
         public static bool Contains<T>(this Option<T> option, T value) => Option.Contains(option, value);
 
-        /// <inheritdoc cref="OptionRecords.Option.Count"/>
+        /// <inheritdoc cref="OptionRecords.Option.Contains{T}(Option{T}, T)"/>
+        public static async Task<bool> Contains<T>(this Task<Option<T>> option, T value) => await Option.Contains(option, value);
+
+        /// <inheritdoc cref="OptionRecords.Option.Count{T}(Option{T})"/>
         public static int Count<T>(this Option<T> option) => Option.Count(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.DefaultValue"/>
+        /// <inheritdoc cref="OptionRecords.Option.Count{T}(Option{T})"/>
+        public static async Task<int> Count<T>(this Task<Option<T>> option) => await Option.Count(option);
+
+        /// <inheritdoc cref="OptionRecords.Option.DefaultValue{T}(Option{T}, T)"/>
         public static T DefaultValue<T>(this Option<T> option, T value) => Option.DefaultValue(option, value);
 
-        /// <inheritdoc cref="OptionRecords.Option.DefaultWith"/>
+        /// <inheritdoc cref="OptionRecords.Option.DefaultValue{T}(Option{T}, T)"/>
+        public static async Task<T> DefaultValue<T>(this Task<Option<T>> option, T value) => await Option.DefaultValue(option, value);
+
+        /// <inheritdoc cref="OptionRecords.Option.DefaultValue{T}(Option{T}, T)"/>
         public static T DefaultWith<T>(this Option<T> option, Func<T> defThunk) => Option.DefaultWith(option, defThunk);
+
+        /// <inheritdoc cref="OptionRecords.Option.DefaultValue{T}(Option{T}, T)"/>
+        public static async Task<T> DefaultWith<T>(this Task<Option<T>> option, Func<T> defThunk) => await Option.DefaultWith(option, defThunk);
 
         /// <inheritdoc cref="OptionRecords.Option.Exists"/>
         public static bool Exists<T>(this Option<T> option, Predicate<T> predicate) => Option.Exists(option, predicate);

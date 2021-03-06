@@ -54,6 +54,48 @@ namespace OptionRecords.Tests
         }
 
         [Fact]
+        public async Task ContainsTest()
+        {
+            var option1 = Task.FromResult<Option<int>>(new None<int>());
+            var option2 = Task.FromResult<Option<int>>(new Some<int>(99));
+            var option3 = Task.FromResult<Option<int>>(new Some<int>(100));
+
+            Assert.False(await Option.Contains(option1, 99));
+            Assert.True(await Option.Contains(option2, 99));
+            Assert.False(await Option.Contains(option3, 99));
+        }
+
+        [Fact]
+        public async Task CountTest()
+        {
+            var option1 = Task.FromResult<Option<int>>(new None<int>());
+            var option2 = Task.FromResult<Option<int>>(new Some<int>(99));
+
+            Assert.Equal(0, await Option.Count(option1));
+            Assert.Equal(1, await Option.Count(option2));
+        }
+
+        [Fact]
+        public async Task DefaultValueTest()
+        {
+            var option1 = Task.FromResult<Option<int>>(new None<int>());
+            var option2 = Task.FromResult<Option<int>>(new Some<int>(42));
+
+            Assert.Equal(99, await Option.DefaultValue(option1, 99));
+            Assert.Equal(42, await Option.DefaultValue(option2, 99));
+        }
+
+        [Fact]
+        public async Task DefaultWithTest()
+        {
+            var option1 = Task.FromResult<Option<int>>(new None<int>());
+            var option2 = Task.FromResult<Option<int>>(new Some<int>(42));
+
+            Assert.Equal(99, await Option.DefaultWith(option1, () => 99));
+            Assert.Equal(42, await Option.DefaultWith(option2, () => 99));
+        }
+
+        [Fact]
         public async Task IterTest()
         {
             var option1 = Task.FromResult<Option<int>>(new None<int>());
