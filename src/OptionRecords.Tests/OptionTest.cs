@@ -186,7 +186,7 @@ namespace OptionRecords.Tests
         [Fact]
         public void OfObjTest()
         {
-            Assert.Equal(new None<string>(), Option.OfObj<string>(null));
+            Assert.Equal(new None<string>(), Option.OfObj((string)null));
             Assert.Equal(new Some<string>("not a null string"), Option.OfObj("not a null string"));
         }
 
