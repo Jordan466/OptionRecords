@@ -739,22 +739,22 @@ namespace OptionRecords
         /// <inheritdoc cref="OptionRecords.Option.DefaultValue{T}(Option{T}, T)"/>
         public static async Task<T> DefaultWith<T>(this Task<Option<T>> option, Func<T> defThunk) => await Option.DefaultWith(option, defThunk);
 
-        /// <inheritdoc cref="OptionRecords.Option.Exists"/>
+        /// <inheritdoc cref="OptionRecords.Option.Exists{T}(Option{T}, Predicate{T})"/>
         public static bool Exists<T>(this Option<T> option, Predicate<T> predicate) => Option.Exists(option, predicate);
 
-        /// <inheritdoc cref="OptionRecords.Option.Filter"/>
+        /// <inheritdoc cref="OptionRecords.Option.Filter{T}(Option{T}, Predicate{T})"/>
         public static Option<T> Filter<T>(this Option<T> option, Predicate<T> predicate) => Option.Filter(option, predicate);
 
-        /// <inheritdoc cref="OptionRecords.Option.Flatten"/>
+        /// <inheritdoc cref="OptionRecords.Option.Flatten{T}(Option{Option{T}})"/>
         public static Option<T> Flatten<T>(this Option<Option<T>> option) => Option.Flatten(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.Fold"/>
+        /// <inheritdoc cref="OptionRecords.Option.Fold{T, TState}(Option{T}, Func{TState, T, TState}, TState)"/>
         public static TState Fold<T, TState>(this Option<T> option, Func<TState, T, TState> fold, TState state) => Option.Fold(option, fold, state);
 
-        /// <inheritdoc cref="OptionRecords.Option.FoldBack"/>
+        /// <inheritdoc cref="OptionRecords.Option.FoldBack{T, TState}(Option{T}, Func{TState, T, TState}, TState)"/>
         public static TState FoldBack<T, TState>(this Option<T> option, Func<TState, T, TState> fold, TState state) => Option.FoldBack(option, fold, state);
 
-        /// <inheritdoc cref="OptionRecords.Option.ForAll"/>
+        /// <inheritdoc cref="OptionRecords.Option.ForAll{T}(Option{T}, Predicate{T})"/>
         public static bool ForAll<T>(this Option<T> option, Predicate<T> predicate) => Option.ForAll(option, predicate);
 
         /// <inheritdoc cref="OptionRecords.Option.Get{T}(Option{T})"/>
@@ -763,10 +763,10 @@ namespace OptionRecords
         /// <inheritdoc cref="OptionRecords.Option.Get{T, TException}(Option{T}, Func{TException})"/>
         public static T Get<T, TException>(this Option<T> option, Func<TException> exception) where TException : Exception, new() => Option.Get(option, exception);
 
-        /// <inheritdoc cref="OptionRecords.Option.IsNone"/>
+        /// <inheritdoc cref="OptionRecords.Option.IsNone{T}(Option{T})"/>
         public static bool IsNone<T>(this Option<T> option) => Option.IsNone(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.IsSome"/>
+        /// <inheritdoc cref="OptionRecords.Option.IsSome{T}(Option{T})"/>
         public static bool IsSome<T>(this Option<T> option) => Option.IsSome(option);
 
         /// <inheritdoc cref="OptionRecords.Option.Iter{T}(Option{T}, Action{T})"/>
@@ -795,25 +795,25 @@ namespace OptionRecords
         /// <returns> An option of the input values after applying the mapping function, or None if any input is None </returns>
         public static Option<U> Map3<T1, T2, T3, U>(this (Option<T1>, Option<T2>, Option<T3>) options, Func<T1, T2, T3, U> mapping) => Option.Map3(options, mapping);
 
-        /// <inheritdoc cref="OptionRecords.Option.OrElse"/>
+        /// <inheritdoc cref="OptionRecords.Option.OrElse{T}(Option{T}, Option{T})"/>
         public static Option<T> OrElse<T>(this Option<T> option, Option<T> ifNone) => Option.OrElse(option, ifNone);
 
-        /// <inheritdoc cref="OptionRecords.Option.OrElseWith"/>
+        /// <inheritdoc cref="OptionRecords.Option.OrElseWith{T}(Option{T}, Func{Option{T}})"/>
         public static Option<T> OrElseWith<T>(this Option<T> option, Func<Option<T>> ifNoneThunk) => Option.OrElseWith(option, ifNoneThunk);
 
-        /// <inheritdoc cref="OptionRecords.Option.ToArray"/>
+        /// <inheritdoc cref="OptionRecords.Option.ToArray{T}(Option{T})"/>
         public static T[] ToArray<T>(this Option<T> option) => Option.ToArray(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.ToEnumerable"/>
+        /// <inheritdoc cref="OptionRecords.Option.ToEnumerable{T}(Option{T})"/>
         public static IEnumerable<T> ToEnumerable<T>(Option<T> option) => Option.ToEnumerable(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.ToList"/>
+        /// <inheritdoc cref="OptionRecords.Option.ToList{T}(Option{T})"/>
         public static List<T> ToList<T>(this Option<T> option) => Option.ToList(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.ToNullable"/>
+        /// <inheritdoc cref="OptionRecords.Option.ToNullable{T}(Option{T})"/>
         public static Nullable<T> ToNullable<T>(this Option<T> option) where T : struct => Option.ToNullable(option);
 
-        /// <inheritdoc cref="OptionRecords.Option.ToObj"/>
+        /// <inheritdoc cref="OptionRecords.Option.ToObj{T}(Option{T})"/>
         public static T ToObj<T>(this Option<T> option) where T : class => Option.ToObj(option);
     }
 
