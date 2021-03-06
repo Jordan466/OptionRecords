@@ -828,8 +828,28 @@ namespace OptionRecords
 
         /// <param name="options"> The input options </param>
         /// <param name="mapping"> A function to apply to the option values </param>
+        /// <returns> An option of the input values after applying the mapping function, or None if either input is None </returns>
+        public static async Task<Option<U>> Map2<T1, T2, U>(this (Option<T1>, Option<T2>) options, Func<T1, T2, Task<U>> mapping) => await Option.Map2(options, mapping);
+
+        /// <param name="options"> The input options </param>
+        /// <param name="mapping"> A function to apply to the option values </param>
+        /// <returns> An option of the input values after applying the mapping function, or None if either input is None </returns>
+        public static async Task<Option<U>> Map2<T1, T2, U>(this (Task<Option<T1>>, Task<Option<T2>>) options, Func<T1, T2, Task<U>> mapping) => await Option.Map2(options, mapping);
+
+        /// <param name="options"> The input options </param>
+        /// <param name="mapping"> A function to apply to the option values </param>
         /// <returns> An option of the input values after applying the mapping function, or None if any input is None </returns>
         public static async Task<Option<U>> Map3<T1, T2, T3, U>(this (Task<Option<T1>>, Task<Option<T2>>, Task<Option<T3>>) options, Func<T1, T2, T3, U> mapping) => await Option.Map3(options, mapping);
+
+        /// <param name="options"> The input options </param>
+        /// <param name="mapping"> A function to apply to the option values </param>
+        /// <returns> An option of the input values after applying the mapping function, or None if any input is None </returns>
+        public static async Task<Option<U>> Map3<T1, T2, T3, U>((Option<T1>, Option<T2>, Option<T3>) options, Func<T1, T2, T3, Task<U>> mapping) => await Option.Map3(options, mapping);
+
+        /// <param name="options"> The input options </param>
+        /// <param name="mapping"> A function to apply to the option values </param>
+        /// <returns> An option of the input values after applying the mapping function, or None if any input is None </returns>
+        public static async Task<Option<U>> Map3<T1, T2, T3, U>((Task<Option<T1>>, Task<Option<T2>>, Task<Option<T3>>) options, Func<T1, T2, T3, Task<U>> mapping) => await Option.Map3(options, mapping);
 
         /// <inheritdoc cref="OptionRecords.Option.OrElse{T}(Option{T}, Option{T})"/>
         public static async Task<Option<T>> OrElse<T>(this Task<Option<T>> option, Option<T> ifNone) => await Option.OrElse(option, ifNone);
