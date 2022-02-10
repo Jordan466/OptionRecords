@@ -4,7 +4,7 @@ This is an an Option type implementaion using C# 9 records which closely follows
 
 Operations against Options can be accessed through static functions or extension methods
 
-Examples of the entire API can be found in the [tests](https://github.com/Jordan466/OptionRecords/blob/main/src/OptionRecords.Tests/OptionTest.cs)
+Examples of the API can be found in the [tests](https://github.com/Jordan466/OptionRecords/blob/main/src/OptionRecords.Tests/OptionTest.cs)
 
 ## Some
 Construct a new Some
